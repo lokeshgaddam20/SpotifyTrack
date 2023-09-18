@@ -48,7 +48,7 @@ def get_path(youtube_url,song_name):
     stream.download(mp3_path)
     print(mp3_path)
 
-def download_songs(song_names):
+def download_songs(song_name):
     """Downloads a list of songs from YouTube as MP3.
 
     Args:
