@@ -3,6 +3,7 @@ import os
 import base64
 from requests import post,get
 import json
+import utube
 
 load_dotenv()
 
@@ -31,7 +32,7 @@ def get_token():
 def get_auth_header(token):
     return {"Authorization": "Bearer " + token}
 
-def get_playlist_tracks(playlist_id):
+def get_tracks(playlist_id):
     token = get_token()
     url = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?market=IN"
     headers = get_auth_header(token)
@@ -40,5 +41,4 @@ def get_playlist_tracks(playlist_id):
     json_result = json.loads(result.content)['items']
     for i in range(0,len(json_result)): 
         res.append(json_result[i]['track']['name'])
-        
-    return res
+        utube.download_songs(res[i])
