@@ -40,4 +40,5 @@ def get_playlist_tracks(playlist_id):
     json_result = json.loads(result.content)['items']
     for i in range(0,len(json_result)): 
         res.append(json_result[i]['track']['name'])
+        
     return res

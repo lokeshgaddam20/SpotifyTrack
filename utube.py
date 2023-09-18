@@ -53,14 +53,14 @@ def get_search_url(song_name):
     for i in range(0,len(video_items)): 
         video_ids.append(video_items[i]['id']['videoId'])
         youtube_url = f"https://www.youtube.com/watch?v={video_ids[i]}"
-        get_path(youtube_url)
+        get_path(youtube_url,song_name)
   
 
-def get_path(youtube_url):
+def get_path(youtube_url,song_name):
 # Download the song as MP3.
     youtube = pytube.YouTube(youtube_url)
     stream = youtube.streams.filter(only_audio=True).first()
-    mp3_path = os.path.join(os.getcwd(), song_name + ".mp3")
+    mp3_path = os.path.join(f'{os.getcwd()}/tracks', song_name)
     stream.download(mp3_path)
     print(mp3_path)
 
@@ -70,9 +70,7 @@ def download_songs(song_names):
     Args:
         song_names: A list of song names to download.
     """
-
-    for song_name in song_names:
-        get_search_url(song_name)
+    get_search_url(song_name)
 
 
 song_names = main.get_playlist_tracks("4p4mW2jaqtPWUOrldqOCwx")
