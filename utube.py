@@ -51,7 +51,7 @@ def get_search_url(song_name):
     soup = BeautifulSoup(response.content, "html.parser")
 
     # Find the first video result.
-    video_result = soup.find("a", class_="ytd-video-renderer")
+    video_result = soup.find("div", class_="ytd-video-renderer yt-img-shadow")
     print(video_result)
 
     # If the video result is not None, return the YouTube URL for the video.
