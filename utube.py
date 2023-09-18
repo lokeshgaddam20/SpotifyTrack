@@ -8,27 +8,27 @@ from bs4 import BeautifulSoup
 import json
 
 
-def get_video_url(youtube_url):
-    """Downloads a list of songs from YouTube as MP3 based on the search query.
+# def get_video_url(youtube_url):
+#     """Downloads a list of songs from YouTube as MP3 based on the search query.
 
-    Args:
-        search_query: The search query to use to find the songs on YouTube.
-    """
+#     Args:
+#         search_query: The search query to use to find the songs on YouTube.
+#     """
 
-    # youtube_url = get_search_url(search_query)
+#     # youtube_url = get_search_url(search_query)
 
-    if youtube_url is not None:
-        # Extract the video ID from the YouTube URL.
-        video_id = re.findall(r"(?:v|=|&)[\w\-]+", youtube_url)[0]
+#     if youtube_url is not None:
+#         # Extract the video ID from the YouTube URL.
+#         video_id = re.findall(r"(?:v|=|&)[\w\-]+", youtube_url)[0]
 
-        # Build the YouTube video URL.
-        youtube_video_url = "https://www.youtube.com/watch?v=" + video_id
+#         # Build the YouTube video URL.
+#         youtube_video_url = "https://www.youtube.com/watch?v=" + video_id
 
-        print(youtube_video_url)
-        # Download the song as MP3.
-        get_path(youtube_video_url)
-    else:
-        print("Song could not be found on YouTube.")
+#         print(youtube_video_url)
+#         # Download the song as MP3.
+#         get_path(youtube_video_url)
+#     else:
+#         print("Song could not be found on YouTube.")
 
 def get_search_url(song_name):
     """Downloads a song from YouTube as MP3.
@@ -44,30 +44,17 @@ def get_search_url(song_name):
     
     youtube_url = f"https://www.googleapis.com/youtube/v3/search/?key={api_key}&type=video&part=snippet&maxResults=1&q={encoded_search_query} "
 
-    # # Get the YouTube URL for the song.
-    # youtube_url = "https://www.youtube.com/results?search_query=" + encoded_search_query
     
-    # print(youtube_url)
-    # # Make a request to the YouTube search URL.
     response = requests.get(youtube_url)
-
-    # # Parse the HTML response.
-    # soup = BeautifulSoup(response.content, "html.parser")
-    # # Find the first video result.
-    # video_result = soup.find("div", class_="ytd-video-renderer yt-img-shadow")
     video_ids = list()
-    video_ids = json.loads(result.content)['items']
+
+    video_items = json.loads(response.content)['items']
     
-    print(video_ids)
-    youtube_url = f"https://www.youtube.com/watch?v={video_ids}"
-    print(youtube_url)
-    # # If the video result is not None, return the YouTube URL for the video.
-    # if video_result is not None:
-    #     youtube_url = video_result["href"]
-    #     return(youtube_url)
-    #     # get_video_url(youtube_url)
-    # # Otherwise, return None.
-    # return "Hello"
+    for i in range(0,len(video_items)): 
+        video_ids.append(video_items[i]['id']['videoId'])
+        youtube_url = f"https://www.youtube.com/watch?v={video_ids[i]}"
+        get_path(youtube_url)
+  
 
 def get_path(youtube_url):
 # Download the song as MP3.
@@ -76,7 +63,6 @@ def get_path(youtube_url):
     mp3_path = os.path.join(os.getcwd(), song_name + ".mp3")
     stream.download(mp3_path)
     print(mp3_path)
-    return mp3_path
 
 def download_songs(song_names):
     """Downloads a list of songs from YouTube as MP3.
@@ -91,3 +77,24 @@ def download_songs(song_names):
 
 song_names = main.get_playlist_tracks("4p4mW2jaqtPWUOrldqOCwx")
 download_songs(song_names)
+
+
+
+# # Get the YouTube URL for the song.
+    # youtube_url = "https://www.youtube.com/results?search_query=" + encoded_search_query
+    
+    # print(youtube_url)
+    # # Make a request to the YouTube search URL.
+    
+    # # Parse the HTML response.
+    # soup = BeautifulSoup(response.content, "html.parser")
+    # # Find the first video result.
+    # video_result = soup.find("div", class_="ytd-video-renderer yt-img-shadow")
+    
+      # # If the video result is not None, return the YouTube URL for the video.
+    # if video_result is not None:
+    #     youtube_url = video_result["href"]
+    #     return(youtube_url)
+    #     # get_video_url(youtube_url)
+    # # Otherwise, return None.
+    # return "Hello"
